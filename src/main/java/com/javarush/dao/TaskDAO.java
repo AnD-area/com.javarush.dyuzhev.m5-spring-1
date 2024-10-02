@@ -51,7 +51,7 @@ public class TaskDAO {
         getSession().remove(task);
     }
 
-    public Session getSession() {
+    private Session getSession() {
         return sessionFactory.getCurrentSession();
     }
 
