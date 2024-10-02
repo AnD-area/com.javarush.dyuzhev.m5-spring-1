@@ -4,6 +4,7 @@ package com.javarush.dao;
 import com.javarush.domain.Task;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,32 +20,39 @@ public class TaskDAO {
         this.sessionFactory = sessionFactory;
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public List<Task> getAll(int offset, int limit) {
-
+        Query<Task> query = getSession().createQuery("from Task", Task.class);
+        query.setFirstResult(offset);
+        query.setMaxResults(limit);
+        return query.getResultList();
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public int getAllCount() {
-
+        Query<Long> query = getSession().createQuery("select count(t) from Task t", Long.class);
+        return Math.toIntExact(query.uniqueResult());
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public Task getById(int id) {
-
+        Query<Task> query = getSession().createQuery("from Task where id = :id", Task.class);
+        query.setParameter("id", id);
+        return query.uniqueResult();
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public Task edit(Task task) {
+    public void saveOrUpdate(Task task) {
+        getSession().persist(task);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
     public void delete(Task task) {
-
+        getSession().remove(task);
     }
 
-private Session getSession() {
+    public Session getSession() {
         return sessionFactory.getCurrentSession();
-}
+    }
 
 }
