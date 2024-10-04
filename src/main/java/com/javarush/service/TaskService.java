@@ -49,11 +49,14 @@ public class TaskService {
     }
 
     @Transactional
-    public void delete(int id) {
+    public Task delete(int id) {
+        System.out.println("Удаление задачи с ID: " + id);
         Task task = taskDAO.getById(id);
         if (isNull(task)) {
             throw new RuntimeException("Task not found");
         }
         taskDAO.delete(task);
+        System.out.println("Удалена задача с ID: " + id);
+        return task;
     }
 }

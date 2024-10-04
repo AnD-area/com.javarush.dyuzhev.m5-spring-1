@@ -11,7 +11,7 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "description", length = 100)
+    @Column(name = "description")
     private String description;
 
     @Enumerated(EnumType.ORDINAL)

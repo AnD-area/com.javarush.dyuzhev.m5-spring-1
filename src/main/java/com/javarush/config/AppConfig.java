@@ -32,7 +32,7 @@ public class AppConfig {
     private Properties hibernateProperties() {
 
         Properties properties = new Properties();
-        properties.put(Environment.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
+        properties.put(Environment.DIALECT, "org.hibernate.dialect.MySQLDialect");
         properties.put(Environment.JAKARTA_JDBC_DRIVER, "com.p6spy.engine.spy.P6SpyDriver");
         properties.put(Environment.HBM2DDL_AUTO, "validate");
 

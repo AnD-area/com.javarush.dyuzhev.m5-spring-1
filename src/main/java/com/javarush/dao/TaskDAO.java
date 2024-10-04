@@ -29,14 +29,14 @@ public class TaskDAO {
     }
 
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
-    public int getAllCount() {
-        Query<Long> query = getSession().createQuery("select count(t) from Task t", Long.class);
+    public int getAllCount(){
+        Query<Long> query = getSession().createQuery("select count(*) from Task", Long.class);
         return Math.toIntExact(query.uniqueResult());
     }
 
-    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED)
     public Task getById(int id) {
-        Query<Task> query = getSession().createQuery("from Task where id = :id", Task.class);
+        Query<Task> query = getSession().createQuery("from Task t where t.id = :id", Task.class);
         query.setParameter("id", id);
         return query.uniqueResult();
     }
@@ -54,5 +54,4 @@ public class TaskDAO {
     private Session getSession() {
         return sessionFactory.getCurrentSession();
     }
-
 }
